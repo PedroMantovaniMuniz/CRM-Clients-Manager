@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Build outputs
+dist/
+build/
+
+# Vite
+.vite/
+
+# Prisma
+API/node_modules/.prisma/
+API/node_modules/@prisma/client/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Certificates / keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+
+# Backups
+*.bak
+*.backup

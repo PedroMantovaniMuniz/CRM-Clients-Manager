@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description"
+    content="CRM para freelancers gerenciarem clientes, contratos, modelos e assinaturas digitais de forma centralizada." />
+  <meta name="application-name" content="CRM Contratos" />
+  <meta name="apple-mobile-web-app-title" content="CRM Contratos" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <title>CRM Contratos</title>
+
+  <script>
+    (() => {
+      const storageKey = '@CRMContratos:theme';
+      const validThemes = new Set(['light', 'dark']);
+
+      const applyTheme = (theme) => {
+        const root = document.documentElement;
+
+        root.classList.toggle('dark', theme === 'dark');
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+      };
+
+      try {
+        const savedTheme = localStorage.getItem(storageKey);
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const theme = validThemes.has(savedTheme) ? savedTheme : systemTheme;
+
+        applyTheme(theme);
+      } catch {
+        applyTheme('light');
+      }
+    })();
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <div
+      style="padding: 24px; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #0f172a; background: #f8fafc;">
+      Para usar o CRM Contratos, habilite o JavaScript no seu navegador.
+    </div>
+  </noscript>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

@@ -1,0 +1,348 @@
+@import "tailwindcss";
+
+/* Tailwind v4: ativa dark mode por classe, sem depender de tailwind.config.js. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tokens globais do CRM. Eles ajudam a manter cores, sombras e bordas consistentes. */
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f8fafc;
+  color: #0f172a;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --crm-bg: #f8fafc;
+  --crm-surface: rgba(255, 255, 255, 0.86);
+  --crm-surface-strong: #ffffff;
+  --crm-border: rgba(226, 232, 240, 0.9);
+  --crm-text: #0f172a;
+  --crm-muted: #64748b;
+  --crm-primary: #2563eb;
+  --crm-primary-hover: #1d4ed8;
+  --crm-ring: rgba(37, 99, 235, 0.25);
+  --crm-danger: #dc2626;
+  --crm-success: #16a34a;
+  --crm-warning: #d97706;
+  --crm-radius-xl: 1rem;
+  --crm-radius-2xl: 1.25rem;
+  --crm-radius-3xl: 1.5rem;
+  --crm-shadow-soft: 0 18px 50px rgba(15, 23, 42, 0.10);
+  --crm-shadow-strong: 0 24px 70px rgba(15, 23, 42, 0.16);
+}
+
+:root.dark {
+  color-scheme: dark;
+  background: #020617;
+  color: #f8fafc;
+
+  --crm-bg: #020617;
+  --crm-surface: rgba(15, 23, 42, 0.78);
+  --crm-surface-strong: #0f172a;
+  --crm-border: rgba(51, 65, 85, 0.9);
+  --crm-text: #f8fafc;
+  --crm-muted: #94a3b8;
+  --crm-primary: #3b82f6;
+  --crm-primary-hover: #60a5fa;
+  --crm-ring: rgba(59, 130, 246, 0.32);
+  --crm-danger: #f87171;
+  --crm-success: #4ade80;
+  --crm-warning: #fbbf24;
+  --crm-shadow-soft: 0 18px 55px rgba(0, 0, 0, 0.30);
+  --crm-shadow-strong: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.55) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.55);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(37, 99, 235, 0.75);
+  background-clip: padding-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  background: var(--crm-bg);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--crm-bg);
+  color: var(--crm-text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.22);
+  color: #0f172a;
+}
+
+.dark ::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #f8fafc;
+}
+
+:focus-visible {
+  outline: 3px solid var(--crm-ring);
+  outline-offset: 3px;
+}
+
+/* Remove setas de inputs numéricos em navegadores WebKit sem afetar acessibilidade. */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+/* Toasts com visual consistente nos dois temas. */
+.crm-toast {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: 18px !important;
+  background: var(--crm-surface) !important;
+  color: var(--crm-text) !important;
+  box-shadow: var(--crm-shadow-soft) !important;
+  backdrop-filter: blur(18px);
+}
+
+/* Utilitários pequenos para elementos reutilizados em componentes. */
+.crm-glass {
+  border: 1px solid var(--crm-border);
+  background: var(--crm-surface);
+  box-shadow: var(--crm-shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.crm-gradient-bg {
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.12), transparent 32%),
+    var(--crm-bg);
+}
+
+.dark .crm-gradient-bg {
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.11), transparent 32%),
+    var(--crm-bg);
+}
+
+.crm-text-balance {
+  text-wrap: balance;
+}
+
+.crm-text-pretty {
+  text-wrap: pretty;
+}
+
+/* Pequeno kit de animações para as classes usadas nos componentes. */
+.animate-in {
+  --crm-enter-opacity: 1;
+  --crm-enter-y: 0;
+  --crm-enter-x: 0;
+  --crm-enter-scale: 0.985;
+  animation: crm-enter 350ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.fade-in {
+  --crm-enter-opacity: 0;
+}
+
+.zoom-in-95 {
+  --crm-enter-scale: 0.95;
+}
+
+.slide-in-from-bottom-2 {
+  --crm-enter-y: 0.5rem;
+}
+
+.slide-in-from-bottom-3 {
+  --crm-enter-y: 0.75rem;
+}
+
+.slide-in-from-bottom-4 {
+  --crm-enter-y: 1rem;
+}
+
+.slide-in-from-top-2 {
+  --crm-enter-y: -0.5rem;
+}
+
+.slide-in-from-top-3 {
+  --crm-enter-y: -0.75rem;
+}
+
+.slide-in-from-left-3 {
+  --crm-enter-x: -0.75rem;
+}
+
+.slide-in-from-right-3 {
+  --crm-enter-x: 0.75rem;
+}
+
+.animate-in.duration-200 {
+  animation-duration: 200ms;
+}
+
+.animate-in.duration-300 {
+  animation-duration: 300ms;
+}
+
+.animate-in.duration-500 {
+  animation-duration: 500ms;
+}
+
+.animate-in.delay-75 {
+  animation-delay: 75ms;
+}
+
+.animate-in.delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-in.delay-150 {
+  animation-delay: 150ms;
+}
+
+@keyframes crm-enter {
+  from {
+    opacity: var(--crm-enter-opacity);
+    transform: translate3d(var(--crm-enter-x), var(--crm-enter-y), 0) scale(var(--crm-enter-scale));
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes crm-pulse-soft {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.crm-pulse-soft {
+  animation: crm-pulse-soft 2.4s ease-in-out infinite;
+}
+
+/* Impressão: importante para PDFs/contratos renderizados pelo navegador. */
+@media print {
+
+  html,
+  body,
+  #root {
+    min-height: auto;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-break-before {
+    break-before: page;
+  }
+
+  .print-break-after {
+    break-after: page;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

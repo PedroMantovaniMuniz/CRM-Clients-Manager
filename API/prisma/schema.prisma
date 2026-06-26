@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                       String             @id @default(uuid())
+  name                     String             @db.VarChar(80)
+  lastName                 String?            @db.VarChar(120)
+  email                    String             @unique @db.VarChar(254)
+  password                 String             @db.VarChar(255)
+  role                     Role               @default(CLIENT)
+  signature                String?
+  documentEncrypted        String?
+  documentHash             String?            @unique @db.VarChar(64)
+  phoneEncrypted           String?
+  createdAt                DateTime           @default(now())
+  updatedAt                DateTime           @updatedAt
+  addressCityEncrypted     String?
+  addressNumberEncrypted   String?
+  addressStateEncrypted    String?
+  addressStreetEncrypted   String?
+  addressZipCodeEncrypted  String?
+  registeredByFreelancerId String?
+  ContractTemplates        ContractTemplate[] @relation("FreelancerTemplates")
+  CancellationRequests     Contract[]         @relation("ContractCancellationRequester")
+  ReceivedContracts        Contract[]         @relation("ClientContracts")
+  CreatedContracts         Contract[]         @relation("FreelancerContracts")
+  freelancerLinksAsClient  FreelancerClient[] @relation("FreelancerClientClient")
+  clientLinksAsFreelancer  FreelancerClient[] @relation("FreelancerClientFreelancer")
+  registeredByFreelancer   User?              @relation("FreelancerClients", fields: [registeredByFreelancerId], references: [id])
+  registeredClients        User[]             @relation("FreelancerClients")
+
+  @@index([role])
+  @@index([registeredByFreelancerId])
+  @@index([createdAt])
+  @@index([role, name, lastName])
+  @@map("users")
+}
+
+model FreelancerClient {
+  id           String   @id @default(uuid())
+  freelancerId String
+  clientId     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  client       User     @relation("FreelancerClientClient", fields: [clientId], references: [id], onDelete: Cascade)
+  freelancer   User     @relation("FreelancerClientFreelancer", fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@unique([freelancerId, clientId])
+  @@index([clientId])
+  @@index([freelancerId, createdAt])
+  @@index([clientId, createdAt])
+  @@map("freelancer_clients")
+}
+
+model Contract {
+  id                      String         @id @default(uuid())
+  clientId                String
+  freelancerId            String
+  cnpjCpf                 String?        @db.VarChar(20)
+  value                   Float
+  startDate               DateTime
+  endDate                 DateTime
+  structure               Json?
+  status                  ContractStatus @default(PENDING)
+  cancellationRequestedBy String?
+  contractedSignature     String?
+  clientSignature         String?
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  cancellationRequester   User?          @relation("ContractCancellationRequester", fields: [cancellationRequestedBy], references: [id])
+  client                  User           @relation("ClientContracts", fields: [clientId], references: [id])
+  freelancer              User           @relation("FreelancerContracts", fields: [freelancerId], references: [id])
+  steps                   Step[]
+
+  @@index([clientId])
+  @@index([freelancerId])
+  @@index([status])
+  @@index([cancellationRequestedBy])
+  @@index([clientId, createdAt])
+  @@index([freelancerId, createdAt])
+  @@index([clientId, status, createdAt])
+  @@index([freelancerId, status, createdAt])
+  @@map("contracts")
+}
+
+model Step {
+  id           String     @id @default(uuid())
+  contractId   String
+  description  String     @db.VarChar(500)
+  deliveryDate DateTime
+  status       StepStatus @default(PENDING)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  contract     Contract   @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId, deliveryDate])
+  @@index([contractId, status])
+  @@map("steps")
+}
+
+model ContractTemplate {
+  id           String   @id @default(uuid())
+  title        String   @db.VarChar(120)
+  description  String?  @db.VarChar(500)
+  structure    Json
+  freelancerId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  freelancer   User     @relation("FreelancerTemplates", fields: [freelancerId], references: [id], onDelete: Cascade)
+
+  @@index([freelancerId])
+  @@index([freelancerId, updatedAt])
+  @@index([freelancerId, title])
+  @@map("contract_templates")
+}
+
+enum Role {
+  FREELANCER
+  CLIENT
+}
+
+enum ContractStatus {
+  PENDING
+  SIGNED
+  CANCELLED
+  COMPLETED
+}
+
+enum StepStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}

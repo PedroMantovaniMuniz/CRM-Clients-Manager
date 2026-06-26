@@ -1,0 +1,60 @@
+{
+  "name": "contracts-crm-api",
+  "version": "1.0.0",
+  "description": "API do Contracts CRM para gerenciamento de clientes, contratos, templates e assinaturas.",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
+    "check": "npm run check:syntax && npm run prisma:validate",
+    "check:syntax": "node --check server.js && node --check prisma/client.js && node --check middleware/authMiddleware.js && node --check middleware/errorHandlerMiddleware.js && node --check middleware/roleMiddleware.js && node --check routes/authRoutes.js && node --check routes/clientRoutes.js && node --check routes/contractRoutes.js && node --check routes/templateRoutes.js && node --check controllers/authController.js && node --check controllers/clientController.js && node --check controllers/contractController.js && node --check controllers/templateController.js && node --check utils/sensitiveDataCrypto.js && node --check utils/userProfilePresenter.js",
+    "prisma:generate": "prisma generate",
+    "prisma:format": "prisma format",
+    "prisma:validate": "prisma validate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "db:push": "prisma db push",
+    "test": "npm run check"
+  },
+  "keywords": [
+    "crm",
+    "contracts",
+    "express",
+    "prisma",
+    "supabase"
+  ],
+  "author": "",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "bcrypt": "^6.0.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "8.18.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.8.0"
+  },
+  "overrides": {
+    "pg": "8.18.0",
+    "@hono/node-server": "1.19.13"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.8.0": true,
+    "bcrypt@6.0.0": true,
+    "prisma@7.8.0": true
+  }
+}
