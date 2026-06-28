@@ -14,7 +14,7 @@
     "dev": "node --watch server.js",
     "start": "node server.js",
     "check": "npm run check:syntax && npm run prisma:validate",
-    "check:syntax": "node --check server.js && node --check prisma/client.js && node --check middleware/authMiddleware.js && node --check middleware/errorHandlerMiddleware.js && node --check middleware/roleMiddleware.js && node --check routes/authRoutes.js && node --check routes/clientRoutes.js && node --check routes/contractRoutes.js && node --check routes/templateRoutes.js && node --check controllers/authController.js && node --check controllers/clientController.js && node --check controllers/contractController.js && node --check controllers/templateController.js && node --check utils/sensitiveDataCrypto.js && node --check utils/userProfilePresenter.js",
+    "check:syntax": "node --check server.js && node --check prisma/client.js && node --check middleware/auth.Middleware.js && node --check middleware/errorHandler.Middleware.js && node --check middleware/role.Middleware.js && node --check routes/auth.Routes.js && node --check routes/client.Routes.js && node --check routes/contract.Routes.js && node --check routes/template.Routes.js && node --check controllers/auth.Controller.js && node --check controllers/client.Controller.js && node --check controllers/contract.Controller.js && node --check controllers/template.Controller.js && node --check utils/sensitiveDataCrypto.Util.js && node --check utils/userProfilePresenter.Util.js",
     "prisma:generate": "prisma generate",
     "prisma:format": "prisma format",
     "prisma:validate": "prisma validate",
