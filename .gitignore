@@ -41,7 +41,6 @@ Thumbs.db
 *.key
 *.p12
 *.pfx
-*.crt
 
 # Backups
 *.bak
